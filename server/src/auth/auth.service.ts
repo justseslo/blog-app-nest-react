@@ -12,6 +12,7 @@ import { compare, hash } from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { IJwtPayload } from './types/jwt-payload.interface';
+import { UserRole } from 'src/common/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -52,5 +53,25 @@ export class AuthService {
       ...createUserDto,
       password: hashedPassword,
     });
+  }
+  async refresh(refreshToken: string) {
+    const refreshTokenDoc =
+      await this.refreshTokensService.getToken(refreshToken);
+    if (!refreshTokenDoc) {
+      throw new UnauthorizedException('You must be logged in');
+    }
+    const newRefreshToken = uuidv4();
+    const payload: IJwtPayload = {
+      role: refreshTokenDoc.role,
+      userId: refreshTokenDoc.userId,
+    };
+    await this.refreshTokensService.create({
+      role: refreshTokenDoc.role,
+      token: newRefreshToken,
+      userId: refreshTokenDoc.userId,
+    });
+    const newAccessToken = this.jwtService.sign(payload);
+    await this.refreshTokensService.delete(refreshToken);
+    return { newAccessToken, newRefreshToken };
   }
 }
