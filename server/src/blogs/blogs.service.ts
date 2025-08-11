@@ -15,7 +15,7 @@ export class BlogsService {
   async delete(id: string) {
     await this.blogModel.findByIdAndDelete(id).exec();
   }
-  async findBlog(id: string) {
+  async findById(id: string) {
     return await this.blogModel.findById(id).exec();
   }
   async getBlogs() {

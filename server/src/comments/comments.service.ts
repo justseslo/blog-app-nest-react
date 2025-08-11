@@ -19,4 +19,7 @@ export class CommentsService {
   async getCommentByBlogId(blogId: string) {
     return this.commentModel.find({ blogId });
   }
+  async find(id: string) {
+    return this.commentModel.findById(id);
+  }
 }
