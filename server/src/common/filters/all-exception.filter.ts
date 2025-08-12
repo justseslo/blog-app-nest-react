@@ -4,7 +4,10 @@ import { Request, Response } from 'express';
 export class AllExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionFilter.name);
   catch(exception: any, host: ArgumentsHost) {
-    const msg = exception.message || 'Internal server error';
+    const msg =
+      exception.response.message[0] ||
+      exception.response ||
+      'Internal server error';
     const statusCode = exception.status || 500;
     const ctx = host.switchToHttp();
     const req: Request = ctx.getRequest();
