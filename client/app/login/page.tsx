@@ -16,36 +16,34 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface ISignupData {
-  username: string;
   email: string;
   password: string;
 }
-export default function Signup() {
+export default function Login() {
   const router = useRouter();
   const [msg, setMsg] = useState<string>("");
   const [formData, setFormData] = useState<ISignupData>({
     email: "",
     password: "",
-    username: "",
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const clearFormData = () => {
-    setFormData({ email: "", password: "", username: "" });
+    setFormData({ email: "", password: "" });
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
         formData,
         {
           withCredentials: true,
         }
       );
       if (res.data.success) {
-        router.push("/login");
+        return router.push("/");
       }
       clearFormData();
     } catch (error) {
@@ -64,14 +62,14 @@ export default function Signup() {
       <Card className="min-w-md">
         <CardHeader>
           <CardTitle className="text-center text-4xl text-emerald-900">
-            Signup
+            Login
           </CardTitle>
           <CardAction>
             <Link
-              href={"/login"}
+              href={"/signup"}
               className="text-emerald-800 text-lg hover:underline"
             >
-              login
+              signup
             </Link>
           </CardAction>
         </CardHeader>
@@ -82,19 +80,6 @@ export default function Signup() {
             onSubmit={handleSubmit}
           >
             {msg ? <p className="text-red-700">{msg}</p> : null}
-            <div className="flex flex-col justify-center gap-3">
-              <Label className="text-lg text-emerald-800 " htmlFor="username">
-                Username:
-              </Label>
-              <Input
-                className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
-                placeholder="you"
-                name="username"
-                id="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
             <div className="flex flex-col justify-center gap-3">
               <Label className="text-lg text-emerald-800" htmlFor="email">
                 Email:
