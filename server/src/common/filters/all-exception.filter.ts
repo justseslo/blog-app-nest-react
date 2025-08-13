@@ -13,10 +13,18 @@ export class AllExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const req: Request = ctx.getRequest();
     const res: Response = ctx.getResponse();
-    this.logger.error(
-      `${req.url} - [${req.method}] - ${statusCode}`,
-      exception.stack,
-    );
+    if (statusCode === 401) {
+      this.logger.warn(
+        `${req.url} - [${req.method}] - ${statusCode}`,
+        exception.stack,
+      );
+    } else {
+      this.logger.error(
+        `${req.url} - [${req.method}] - ${statusCode}`,
+        exception.stack,
+      );
+    }
+
     return res.status(statusCode).json({ success: false, msg });
   }
 }

@@ -74,4 +74,8 @@ export class AuthService {
     await this.refreshTokensService.delete(refreshToken);
     return { newAccessToken, newRefreshToken };
   }
+  async me(userId: string) {
+    const user = await this.usersService.getById(userId);
+    return user
+  }
 }

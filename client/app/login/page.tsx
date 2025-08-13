@@ -43,7 +43,7 @@ export default function Login() {
         }
       );
       if (res.data.success) {
-        return router.push("/");
+        return router.push("/blogs");
       }
       clearFormData();
     } catch (error) {

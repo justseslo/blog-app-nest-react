@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   Res,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import type { Request, Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -64,5 +67,11 @@ export class AuthController {
       expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
     });
     return { success: true };
+  }
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async me(@Req() req) {
+    const user = await this.authService.me(req.user.userId);
+    return { success: true, user };
   }
 }
