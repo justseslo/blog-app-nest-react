@@ -68,10 +68,30 @@ export class AuthController {
     });
     return { success: true };
   }
-  @Get('me')
+  @Get('check-token')
   @UseGuards(AuthGuard('jwt'))
-  async me(@Req() req) {
-    const user = await this.authService.me(req.user.userId);
-    return { success: true, user };
+  async checkToken(@Req() req) {
+    return { success: true };
+  }
+  @Post('logout')
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const refreshToken = req?.cookies?.['refreshToken'];
+    if (!refreshToken) {
+      throw new UnauthorizedException(
+        'You have been logged out. Please log in again.',
+      );
+    }
+    await this.authService.logout(refreshToken);
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: 'lax',
+    });
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: 'lax',
+    });
+    return { success: true, msg: 'Logged out successfully' };
   }
 }

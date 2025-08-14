@@ -1,7 +1,6 @@
-import React from 'react'
+"use client";
+import React from "react";
 
 export default function Blogs() {
-  return (
-    <div>Blogs</div>
-  )
+  return <div>Blogs</div>;
 }

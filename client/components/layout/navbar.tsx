@@ -1,21 +1,39 @@
 "use client";
-import { getMe } from "@/lib/reduxtk/features/user/me.slice";
+import { checkToken } from "@/lib/reduxtk/features/auth/auth.slice";
 import { AppDispatch, RootState } from "@/lib/reduxtk/store";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Navbar() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector<RootState>((state) => state.me.user);
+  const isLogined = useSelector<RootState>((state) => state.auth.isLogined);
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      dispatch(getMe());
+    const hasAuthAttempt = localStorage.getItem("auth_attempt");
+    if (hasAuthAttempt === "true") {
+      dispatch(checkToken());
     }
   }, []);
+  const handleLogout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        localStorage.removeItem("auth_attempt");
+        dispatch(checkToken());
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
       <h1 className="text-3xl">BlogApp</h1>
@@ -29,8 +47,11 @@ export default function Navbar() {
         <Link className="hover:underline" href={"/authors"}>
           Authors
         </Link>
-        {user ? (
-          <Button className="bg-white text-emerald-900 hover:scale-105 hover:bg-gray-300 cursor-pointer">
+        {isLogined ? (
+          <Button
+            className="bg-white text-emerald-900 hover:scale-105 hover:bg-gray-300 cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         ) : (

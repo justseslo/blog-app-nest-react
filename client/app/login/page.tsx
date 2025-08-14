@@ -10,16 +10,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { checkToken } from "@/lib/reduxtk/features/auth/auth.slice";
+import { AppDispatch } from "@/lib/reduxtk/store";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface ISignupData {
   email: string;
   password: string;
 }
 export default function Login() {
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [msg, setMsg] = useState<string>("");
   const [formData, setFormData] = useState<ISignupData>({
@@ -43,6 +47,8 @@ export default function Login() {
         }
       );
       if (res.data.success) {
+        localStorage.setItem("auth_attempt", "true");
+        dispatch(checkToken());
         return router.push("/blogs");
       }
       clearFormData();

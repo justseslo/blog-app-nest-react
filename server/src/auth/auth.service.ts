@@ -76,6 +76,10 @@ export class AuthService {
   }
   async me(userId: string) {
     const user = await this.usersService.getById(userId);
-    return user
+    return user;
+  }
+  async logout(refreshToken: string) {
+    await this.refreshTokensService.delete(refreshToken);
+    
   }
 }
