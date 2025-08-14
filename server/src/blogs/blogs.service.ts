@@ -19,6 +19,6 @@ export class BlogsService {
     return await this.blogModel.findById(id).exec();
   }
   async getBlogs() {
-    return await this.blogModel.find({}).exec();
+    return await this.blogModel.find({}).populate('authorId').exec();
   }
 }

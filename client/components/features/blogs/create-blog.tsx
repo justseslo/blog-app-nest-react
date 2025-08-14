@@ -9,24 +9,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FaPlus } from "react-icons/fa";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
+import { Button } from "../../ui/button";
 import { AxiosError } from "axios";
 import { api } from "@/lib/api";
 import { IBlog } from "./blog.interface";
+import { getBlogs } from "@/app/blogs/page";
+import { useRouter } from "next/navigation";
 interface IMsg {
   type: "error" | "success" | "";
   msg: string;
 }
 export default function CreateBlog() {
+  const router = useRouter();
   const [msg, setMsg] = useState<IMsg>({ type: "", msg: "" });
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await api.post("/blogs", formData, { withCredentials: true });
       if (res.data.success) {
+        router.refresh();
         setMsg({ msg: res.data.msg, type: "success" });
         setTimeout(() => {
           setMsg({ msg: "", type: "" });
