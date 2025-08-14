@@ -10,12 +10,16 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useRouter } from "next/navigation";
 
 export default function BlogList({ blogs }: { blogs: IBlog[] }) {
+  const router = useRouter()
   return (
     <div className="grid lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-5 px-6 mt-7">
       {blogs.map((blog, index) => (
-        <Card className="min-w-2xs py-0 gap-3 " key={blog._id}>
+        <Card className="min-w-2xs py-0 gap-3" onClick={()=>{
+          router.push(`/blogs/${blog._id}`)
+        }} key={blog._id}>
           <div className="w-full">
             <AspectRatio ratio={16 / 9} className="relative w-full">
               <Image

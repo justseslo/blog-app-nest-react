@@ -1,8 +1,15 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBlogDto } from './dto/create-blog.dto';
-import type { Request } from 'express';
 
 @Controller('blogs')
 export class BlogsController {
@@ -18,5 +25,10 @@ export class BlogsController {
   async getBlogs() {
     const blogs = await this.blogsService.getBlogs();
     return { success: true, blogs };
+  }
+  @Get(':id')
+  async getBlogDetails(@Param('id') id: string) {
+    const blog = await this.blogsService.findById(id);
+    return { success: true, blog };
   }
 }

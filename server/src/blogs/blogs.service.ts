@@ -16,9 +16,15 @@ export class BlogsService {
     await this.blogModel.findByIdAndDelete(id).exec();
   }
   async findById(id: string) {
-    return await this.blogModel.findById(id).exec();
+    return await this.blogModel
+      .findById(id)
+      .populate({ path: 'authorId', select: '-password' })
+      .exec();
   }
   async getBlogs() {
-    return await this.blogModel.find({}).populate('authorId').exec();
+    return await this.blogModel
+      .find({})
+      .populate({ path: 'authorId', select: '-password' })
+      .exec();
   }
 }
