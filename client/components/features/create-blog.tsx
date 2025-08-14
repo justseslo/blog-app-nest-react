@@ -15,12 +15,7 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { AxiosError } from "axios";
 import { api } from "@/lib/api";
-interface IBlog {
-  title: string;
-  imageUrl: string;
-  description: string;
-  content: string;
-}
+import { IBlog } from "./blog.interface";
 interface IMsg {
   type: "error" | "success" | "";
   msg: string;
@@ -130,7 +125,7 @@ export default function CreateBlog() {
               placeholder="Enter content..."
               id="content"
               name="content"
-              maxLength={3000}
+              maxLength={15000}
               onChange={handleChange}
               value={formData.content}
             />

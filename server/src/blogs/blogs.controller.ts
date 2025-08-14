@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -13,5 +13,10 @@ export class BlogsController {
     const userId = req.user?.userId;
     await this.blogsService.create({ ...createBlogDto, authorId: userId });
     return { success: true, msg: 'Created blog successfully' };
+  }
+  @Get()
+  async getBlogs() {
+    const blogs = await this.blogsService.getBlogs();
+    return { success: true, blogs };
   }
 }
