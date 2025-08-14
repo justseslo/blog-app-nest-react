@@ -7,4 +7,11 @@ import type { Request } from 'express';
 @Controller('blogs')
 export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
+  @Post()
+  @UseGuards(AuthGuard('jwt'))
+  async createBlog(@Body() createBlogDto: CreateBlogDto, @Req() req) {
+    const userId = req.user?.userId;
+    await this.blogsService.create({ ...createBlogDto, authorId: userId });
+    return { success: true, msg: 'Created blog successfully' };
+  }
 }
