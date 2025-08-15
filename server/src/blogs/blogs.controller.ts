@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -10,6 +11,7 @@ import {
 import { BlogsService } from './blogs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { BlogsOwnerShip } from './guards/blog-ownership.guard';
 
 @Controller('blogs')
 export class BlogsController {
@@ -25,6 +27,12 @@ export class BlogsController {
   async getBlogs() {
     const blogs = await this.blogsService.getBlogs();
     return { success: true, blogs };
+  }
+  @Delete(':id')
+  @UseGuards(AuthGuard("jwt"),BlogsOwnerShip)
+  async deleteBlog(@Param('id') id: string) {
+    await this.blogsService.delete(id);
+    return { success: true, msg: 'Deleted blog successfully' };
   }
   @Get('my-blogs')
   @UseGuards(AuthGuard('jwt'))

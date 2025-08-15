@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { User } from 'src/users/schemas/user.schema';
 
 @Schema({ timestamps: true })
 export class Blog {
-  @Prop({ required: true, ref: User.name })
-  authorId: string;
+  @Prop({ required: true, ref: User.name, type: Types.ObjectId })
+  authorId: any;
   @Prop({ required: true })
   title: string;
   @Prop({ required: true })

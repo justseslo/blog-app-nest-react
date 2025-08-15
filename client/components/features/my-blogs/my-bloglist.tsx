@@ -6,7 +6,20 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 export default function MyBloglist({ myblogs }: { myblogs: IBlog[] }) {
+  const router = useRouter();
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await api.delete(`/blogs/${id}`);
+      if (res.data.success) {
+        router.refresh();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-5 gap-5 px-6 mt-7">
       {myblogs.map((blog, index) => (
@@ -30,8 +43,14 @@ export default function MyBloglist({ myblogs }: { myblogs: IBlog[] }) {
             <CardTitle>{blog.title}</CardTitle>
           </CardHeader>
           <CardFooter className="flex justify-around">
-            <FaPen size={25} className="cursor-pointer" />{" "}
-            <MdDelete size={25} className="cursor-pointer" />
+            <FaPen size={25} className="cursor-pointer" />
+            <MdDelete
+              size={25}
+              className="cursor-pointer"
+              onClick={() => {
+                handleDelete(blog._id!);
+              }}
+            />
           </CardFooter>
         </Card>
       ))}
