@@ -35,7 +35,7 @@ export default function Navbar() {
     }
   };
   return (
-    <div className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
+    <nav className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
       <h1 className="text-3xl">BlogApp</h1>
       <div className="flex gap-5 items-center">
         <Link className="hover:underline" href={"/about"}>
@@ -46,6 +46,9 @@ export default function Navbar() {
         </Link>
         <Link className="hover:underline" href={"/authors"}>
           Authors
+        </Link>
+        <Link className="hover:underline" href={"/my-blogs"}>
+          My Blogs
         </Link>
         {isLogined ? (
           <Button
@@ -70,6 +73,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-    </div>
+    </nav>
   );
 }

@@ -20,7 +20,7 @@ interface ISignupData {
   email: string;
   password: string;
 }
-export default function Signup() {
+export default function SignupPage() {
   const router = useRouter();
   const [msg, setMsg] = useState<string>("");
   const [formData, setFormData] = useState<ISignupData>({

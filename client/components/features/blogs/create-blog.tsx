@@ -15,7 +15,7 @@ import { Textarea } from "../../ui/textarea";
 import { Button } from "../../ui/button";
 import { AxiosError } from "axios";
 import { api } from "@/lib/api";
-import { IBlog } from "./blog.interface";
+import { IBlog } from "../common/types/blog.interface";
 import { getBlogs } from "@/app/blogs/page";
 import { useRouter } from "next/navigation";
 interface IMsg {

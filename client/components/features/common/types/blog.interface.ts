@@ -7,4 +7,5 @@ export interface IBlog {
   description: string;
   content: string;
   authorId?: IUser;
+  createdAt?:string
 }

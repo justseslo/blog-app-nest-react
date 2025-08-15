@@ -27,4 +27,10 @@ export class BlogsService {
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
+  async getBlogsByAuthorId(authorId: string) {
+    return await this.blogModel
+      .find({ authorId })
+      .populate({ path: 'authorId', select: '-password' })
+      .exec();
+  }
 }

@@ -1,25 +1,20 @@
 "use client";
 import React from "react";
 import { IBlog } from "../common/types/blog.interface";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useRouter } from "next/navigation";
-
-export default function BlogList({ blogs }: { blogs: IBlog[] }) {
-  const router = useRouter()
+import { Card, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
+import { FaPen } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+export default function MyBloglist({ myblogs }: { myblogs: IBlog[] }) {
   return (
-    <div className="grid lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-5 px-6 mt-7">
-      {blogs.map((blog, index) => (
-        <Card className="min-w-2xs py-0 gap-3 justify-between" onClick={()=>{
-          router.push(`/blogs/${blog._id}`)
-        }} key={blog._id}>
+    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-5 gap-5 px-6 mt-7">
+      {myblogs.map((blog, index) => (
+        <Card
+          className=" py-0 gap-3 justify-between pb-3"
+          onClick={() => {}}
+          key={blog._id}
+        >
           <div className="w-full">
             <AspectRatio ratio={16 / 9} className="relative w-full">
               <Image
@@ -28,16 +23,15 @@ export default function BlogList({ blogs }: { blogs: IBlog[] }) {
                 alt=""
                 fill
                 priority={index < 2}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </AspectRatio>
           </div>
           <CardHeader>
             <CardTitle>{blog.title}</CardTitle>
           </CardHeader>
-          <CardContent>{blog.description}</CardContent>
-          <CardFooter>
-            <p>Author: {blog.authorId!.username}</p>
+          <CardFooter className="flex justify-around">
+            <FaPen size={25} className="cursor-pointer" />{" "}
+            <MdDelete size={25} className="cursor-pointer" />
           </CardFooter>
         </Card>
       ))}

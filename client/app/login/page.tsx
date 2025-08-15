@@ -22,7 +22,7 @@ interface ISignupData {
   email: string;
   password: string;
 }
-export default function Login() {
+export default function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [msg, setMsg] = useState<string>("");

@@ -1,11 +1,16 @@
 import BlogList from "@/components/features/blogs/bloglist";
 import CreateBlog from "@/components/features/blogs/create-blog";
 import { api } from "@/lib/api";
+import { cookies } from "next/headers";
 import React from "react";
 
 export const getBlogs = async () => {
+  const mycookies = await cookies();
+
   try {
-    const res = await api.get("/blogs", { withCredentials: true });
+    const res = await api.get("/blogs", {
+      headers: { Cookie: mycookies.toString() },
+    });
     if (res.data.success) {
       return res.data.blogs;
     }
@@ -14,11 +19,11 @@ export const getBlogs = async () => {
   }
 };
 
-export default async function Blogs() {
+export default async function BlogsPage() {
   const blogs = await getBlogs();
   return (
     <div className="w-full h-full">
-      <BlogList blogs={blogs} key={"blog-list"}/>
+      <BlogList blogs={blogs} key={"blog-list"} />
       <CreateBlog />
     </div>
   );

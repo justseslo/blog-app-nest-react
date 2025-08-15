@@ -26,6 +26,13 @@ export class BlogsController {
     const blogs = await this.blogsService.getBlogs();
     return { success: true, blogs };
   }
+  @Get('my-blogs')
+  @UseGuards(AuthGuard('jwt'))
+  async getMyBlogs(@Req() req) {
+    const userId = req.user.userId;
+    const myblogs = await this.blogsService.getBlogsByAuthorId(userId);
+    return { success: true, myblogs };
+  }
   @Get(':id')
   async getBlogDetails(@Param('id') id: string) {
     const blog = await this.blogsService.findById(id);
