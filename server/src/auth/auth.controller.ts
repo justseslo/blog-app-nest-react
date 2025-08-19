@@ -50,6 +50,7 @@ export class AuthController {
   ) {
     const refreshToken = req?.cookies?.['refreshToken'];
     if (!refreshToken) {
+      console.log('1');
       throw new UnauthorizedException('You must be logged in');
     }
     const { newAccessToken, newRefreshToken } =

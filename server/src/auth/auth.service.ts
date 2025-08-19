@@ -80,6 +80,5 @@ export class AuthService {
   }
   async logout(refreshToken: string) {
     await this.refreshTokensService.delete(refreshToken);
-    
   }
 }

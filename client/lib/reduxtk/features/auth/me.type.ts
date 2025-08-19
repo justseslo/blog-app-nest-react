@@ -1,3 +1,0 @@
-interface IMe{
-    username:string,
-}
