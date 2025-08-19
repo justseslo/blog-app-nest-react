@@ -5,16 +5,13 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import type { AppDispatch, RootState } from "@/store/store";
-import { checkToken } from "@/features/auth.slice";
+import { checkToken } from "@/features/auth/slice/auth.slice";
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const isLogined = useSelector((state: RootState) => state.auth.isLogined);
   useEffect(() => {
-    const hasAuthAttempt = localStorage.getItem("auth_attempt");
-    if (hasAuthAttempt === "true") {
-      dispatch(checkToken());
-    }
+    dispatch(checkToken());
   }, []);
   const handleLogout = async (e: React.FormEvent) => {
     e.preventDefault();

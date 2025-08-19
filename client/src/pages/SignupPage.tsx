@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { api } from "@/lib/api";
 import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
@@ -36,13 +37,9 @@ export function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await api.post("/auth/signup", formData, {
+        withCredentials: true,
+      });
       if (res.data.success) {
         navigate("/login");
       }

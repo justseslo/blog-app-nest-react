@@ -14,7 +14,7 @@ export const checkToken = createAsyncThunk("auth/checkToken", async () => {
     throw error;
   }
 });
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
@@ -28,4 +28,3 @@ const authSlice = createSlice({
   },
 });
 
-export const authReducer = authSlice.reducer;

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "./App.css";
-import AppRoute from "./routes/AppRoute";
 import { BrowserRouter, Router } from "react-router";
+import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
     <BrowserRouter>
-      <AppRoute />
+      <AppRouter/>
     </BrowserRouter>
   );
 }
