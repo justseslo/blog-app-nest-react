@@ -5,6 +5,7 @@ import { SignupPage } from "@/pages/SignupPage";
 import LoginPage from "@/pages/LoginPage";
 import HomePage from "@/pages/HomePage";
 import BlogsPage from "@/pages/blogs/BlogsPage";
+import BlogsDetailPage from "@/pages/blogs/BlogsDetailPage";
 
 function AppRouter() {
   return (
@@ -12,6 +13,7 @@ function AppRouter() {
       <Route path="/" element={<AppLayout />}>
         <Route path="" index element={<HomePage />} />
         <Route path="blogs" element={<BlogsPage />} />
+        <Route path="blogs/:id" element={<BlogsDetailPage />} />
       </Route>
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
