@@ -9,3 +9,10 @@ export interface IBlog {
   authorId: IAuthor;
   createdAt: string;
 }
+
+export interface ICreateBlog {
+  title: string;
+  imageUrl: string;
+  description: string;
+  content: string;
+}

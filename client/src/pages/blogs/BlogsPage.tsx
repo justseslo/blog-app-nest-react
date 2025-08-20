@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import BlogCard from "@/features/blog/components/BlogCard";
 import Pagination from "@/components/layout/Pagination";
+import CreateBlog from "@/features/blog/components/CreateBlog";
 
 function BlogsPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,6 +31,7 @@ function BlogsPage() {
         ))}
       </div>
       <Pagination />
+      <CreateBlog />
     </div>
   );
 }
