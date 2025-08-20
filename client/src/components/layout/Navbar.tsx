@@ -3,36 +3,37 @@ import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import type { AppDispatch, RootState } from "@/store/store";
 import { checkToken } from "@/features/auth/slice/auth.slice";
+import { api } from "@/lib/api";
 export default function Navbar() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const isLogined = useSelector((state: RootState) => state.auth.isLogined);
-  useEffect(() => {
-    dispatch(checkToken());
-  }, []);
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleLogout = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await api.post("/auth/logout", {}, { withCredentials: true });
       if (res.data.success) {
-        localStorage.removeItem("auth_attempt");
         dispatch(checkToken());
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   return (
     <nav className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
-      <h1 className="text-3xl">BlogApp</h1>
+      <h1
+        className="text-3xl cursor-pointer"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        BlogApp
+      </h1>
       <div className="flex gap-5 items-center">
+        <a className="hover:underline" href={"/blogs"}>
+          Blogs
+        </a>
         <a className="hover:underline" href={"/about"}>
           About
         </a>

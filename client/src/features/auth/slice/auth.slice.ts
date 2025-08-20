@@ -2,9 +2,11 @@ import { api } from "@/lib/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface IAuthState {
   isLogined: boolean;
+  isAuthChecked: boolean;
 }
 const initialState: IAuthState = {
   isLogined: false,
+  isAuthChecked: false,
 };
 export const checkToken = createAsyncThunk("auth/checkToken", async () => {
   try {
@@ -21,10 +23,11 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(checkToken.fulfilled, (state, action) => {
       state.isLogined = true;
+      state.isAuthChecked = true;
     });
     builder.addCase(checkToken.rejected, (state, action) => {
       state.isLogined = false;
+      state.isAuthChecked = true;
     });
   },
 });
-

@@ -4,10 +4,12 @@ import { api } from "@/lib/api";
 interface IBlogsState {
   blogs: IBlog[];
   currentBlog: IBlog | undefined;
+  myBlogs: IBlog[];
 }
 const initialState: IBlogsState = {
   blogs: [],
   currentBlog: undefined,
+  myBlogs: [],
 };
 export const getBlogDetail = createAsyncThunk(
   "blogs/getBlogDetail",
@@ -20,6 +22,14 @@ export const getBlogDetail = createAsyncThunk(
     }
   }
 );
+export const getMyblogs = createAsyncThunk("blogs/myBlogs", async () => {
+  try {
+    const res = await api.get("/blogs/my-blogs");
+    if (res.data.success) return res.data.myblogs;
+  } catch (error) {
+    throw error;
+  }
+});
 export const getBlogs = createAsyncThunk("blogs/getBlogs", async () => {
   try {
     const res = await api.get("/blogs");
@@ -38,6 +48,9 @@ export const blogsSlice = createSlice({
     });
     builder.addCase(getBlogDetail.fulfilled, (state, action) => {
       state.currentBlog = action.payload;
+    });
+    builder.addCase(getMyblogs.fulfilled, (state, action) => {
+      state.myBlogs = action.payload;
     });
   },
 });
