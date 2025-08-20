@@ -22,8 +22,8 @@ export default function AppRouter() {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route path="" index element={<HomePage />} />
-        <Route path="blogs" element={<BlogsPage />} />
-        <Route path="blogs/:id" element={<BlogsDetailPage />} />
+        <Route path="blogs/:page" element={<BlogsPage />} />
+        <Route path="blog-detail/:id" element={<BlogsDetailPage />} />
         <Route
           path="my-blogs"
           element={isLogined ? <MyBlogsPage /> : <Navigate to={"/login"} />}
