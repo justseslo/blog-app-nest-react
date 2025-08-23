@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,6 +11,13 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { IBlog } from "../types/blog.interface";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { getBlogs } from "../slice/blogs.slice";
+import type { AppDispatch } from "@/store/store";
 export default function BlogCard({
   blog,
   showActions = false,
@@ -24,6 +31,16 @@ export default function BlogCard({
   handleClick?: (id: string) => void;
   handleUpdate?: () => void;
 }) {
+  const dispatch = useDispatch<AppDispatch>();
+  const toggleLike = async (blogId: string) => {
+    try {
+      const res = await api.post(`/likes/${blogId}`);
+      if (res.data.success) {
+        dispatch(getBlogs());
+      }
+    } catch (error) {}
+  };
+
   return (
     <Card
       className="min-w-2xs py-0 gap-3 justify-between cursor-pointer"
@@ -45,7 +62,9 @@ export default function BlogCard({
       </CardHeader>
       <CardContent>{blog.description}</CardContent>
       <CardFooter
-        className={`${showActions ? "flex justify-around" : ""} py-3`}
+        className={`${
+          showActions ? "justify-around" : "justify-between"
+        } py-3 flex`}
       >
         {showActions ? (
           <>
@@ -67,7 +86,29 @@ export default function BlogCard({
             />
           </>
         ) : (
-          <p>Author: {blog.authorId.username}</p>
+          <>
+            <p>Author: {blog.authorId.username}</p>
+            <div className="flex flex-col justify-center items-center">
+              {blog.isLiked ? (
+                <IoMdHeart
+                  size={29}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike(blog._id);
+                  }}
+                />
+              ) : (
+                <IoMdHeartEmpty
+                  size={29}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike(blog._id);
+                  }}
+                />
+              )}
+              <p>{blog.likes}</p>
+            </div>
+          </>
         )}
       </CardFooter>
     </Card>

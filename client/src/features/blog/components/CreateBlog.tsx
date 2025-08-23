@@ -25,7 +25,6 @@ interface IMsg {
 }
 export default function CreateBlog() {
   const dispatch = useDispatch<AppDispatch>();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [msg, setMsg] = useState<IMsg>({ type: "", msg: "" });
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,18 +64,15 @@ export default function CreateBlog() {
     setFormData({ content: "", description: "", imageUrl: "", title: "" });
   };
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      {!isDialogOpen && (
-        <DialogTrigger asChild>
-          <div
-            className="absolute right-10 bottom-10 bg-emerald-800 text-white rounded-full min-w-12 min-h-12 cursor-pointer flex justify-center items-center"
-            onClick={clearFormData}
-          >
-            <FaPlus size={23} />
-          </div>
-        </DialogTrigger>
-      )}
-
+    <Dialog>
+      <DialogTrigger asChild>
+        <div
+          className="fixed right-10 bottom-10 bg-emerald-800 text-white rounded-full min-w-12 min-h-12 cursor-pointer flex justify-center items-center"
+          onClick={clearFormData}
+        >
+          <FaPlus size={23} />
+        </div>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form
           className="flex flex-col gap-4 bg-white"
@@ -157,9 +153,6 @@ export default function CreateBlog() {
               className="bg-emerald-700 hover:bg-emerald-900 hover:scale-105 cursor-pointer"
               size={"lg"}
               form="signup"
-              onClick={() => {
-                setIsDialogOpen(true);
-              }}
             >
               Submit
             </Button>

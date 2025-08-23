@@ -18,6 +18,7 @@ function BlogsPage() {
   const handleClick = (id: string) => {
     navigate(`/blog-detail/${id}`);
   };
+
   return (
     <div className="flex flex-col items-center">
       <div className="grid lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-5 px-6 mt-7">

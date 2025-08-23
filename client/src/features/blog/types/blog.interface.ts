@@ -8,6 +8,8 @@ export interface IBlog {
   content: string;
   authorId: IAuthor;
   createdAt: string;
+  isLiked:boolean;
+  likes:number
 }
 
 export interface ICreateBlog {

@@ -8,17 +8,12 @@ export class AllExceptionFilter implements ExceptionFilter {
       exception.response?.message[0] ||
       exception.response ||
       'Internal server error';
-
     const statusCode = exception.status || 500;
     const ctx = host.switchToHttp();
     const req: Request = ctx.getRequest();
     const res: Response = ctx.getResponse();
-    if (statusCode === 401) {
-      this.logger.warn(
-        `${req.url} - [${req.method}] - ${statusCode}`,
-        exception.stack,
-      );
-    } else {
+
+    if (!req.url.includes('check-token')) {
       this.logger.error(
         `${req.url} - [${req.method}] - ${statusCode}`,
         exception.stack,

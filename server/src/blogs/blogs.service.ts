@@ -2,15 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blog, BlogDocument } from './schemas/blog.schema';
 import { Model } from 'mongoose';
-import { CreateBlogDto } from './dto/create-blog.dto';
+import { LikesService } from 'src/likes/likes.service';
+import { JwtPayload } from 'jsonwebtoken';
+import { IJwtPayload } from 'src/auth/types/jwt-payload.interface';
 
 @Injectable()
 export class BlogsService {
   constructor(
     @InjectModel(Blog.name) private readonly blogModel: Model<BlogDocument>,
+    private readonly likesService: LikesService,
   ) {}
-  async create(createBlogDto: CreateBlogDto) {
-    await this.blogModel.create(createBlogDto);
+  async create(blogData) {
+    await this.blogModel.create(blogData);
   }
   async delete(id: string) {
     await this.blogModel.findByIdAndDelete(id).exec();
@@ -21,11 +24,26 @@ export class BlogsService {
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
-  async getBlogs() {
-    return await this.blogModel
+  async getBlogs(user: IJwtPayload) {
+    const blogs = await this.blogModel
       .find({})
       .populate({ path: 'authorId', select: '-password' })
       .exec();
+    const newBlogs = await Promise.all(
+      blogs.map(async (blog) => ({
+        ...blog.toObject(),
+        likes: (
+          await this.likesService.getByBlogId(blog._id.toString())
+        ).length,
+        isLiked: user
+          ? await this.likesService.checkLike(
+              blog._id.toString(),
+              user.userId,
+            )
+          : false,
+      })),
+    );
+    return newBlogs;
   }
   async getBlogsByAuthorId(authorId: string) {
     return await this.blogModel
@@ -33,4 +51,5 @@ export class BlogsService {
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
+  async getLikes() {}
 }

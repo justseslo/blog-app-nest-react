@@ -8,6 +8,7 @@ import { CommentsModule } from './comments/comments.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RefreshTokensModule } from './refresh-tokens/refresh-tokens.module';
+import { LikesModule } from './likes/likes.module';
 @Module({
   imports: [
     UsersModule,
@@ -22,6 +23,7 @@ import { RefreshTokensModule } from './refresh-tokens/refresh-tokens.module';
       }),
     }),
     RefreshTokensModule,
+    LikesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

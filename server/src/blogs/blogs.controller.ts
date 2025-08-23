@@ -12,6 +12,8 @@ import { BlogsService } from './blogs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { BlogsOwnerShip } from './guards/blog-ownership.guard';
+import { OptionalAuthGuard } from 'src/common/guards/optional-auth.guard';
+import { IJwtPayload } from 'src/auth/types/jwt-payload.interface';
 
 @Controller('blogs')
 export class BlogsController {
@@ -24,12 +26,14 @@ export class BlogsController {
     return { success: true, msg: 'Created blog successfully' };
   }
   @Get()
-  async getBlogs() {
-    const blogs = await this.blogsService.getBlogs();
+  @UseGuards(OptionalAuthGuard)
+  async getBlogs(@Req() req) {
+    const user: IJwtPayload = req.user;
+    const blogs = await this.blogsService.getBlogs(user);
     return { success: true, blogs };
   }
   @Delete(':id')
-  @UseGuards(AuthGuard("jwt"),BlogsOwnerShip)
+  @UseGuards(AuthGuard('jwt'), BlogsOwnerShip)
   async deleteBlog(@Param('id') id: string) {
     await this.blogsService.delete(id);
     return { success: true, msg: 'Deleted blog successfully' };

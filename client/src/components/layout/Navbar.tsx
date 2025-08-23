@@ -29,7 +29,7 @@ export default function Navbar() {
     } catch (error) {}
   };
   const links = [
-    { href: "/blogs", text: "Blogs" },
+    { href: "/blogs/1", text: "Blogs" },
     { href: "/about", text: "About" },
     { href: "/contact", text: "Contact" },
     { href: "/authors", text: "Authors" },
