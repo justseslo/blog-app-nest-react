@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment, CommentDocument } from './schemas/comment.schema';
-import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -10,16 +9,18 @@ export class CommentsService {
     @InjectModel(Comment.name)
     private readonly commentModel: Model<CommentDocument>,
   ) {}
-  async create(createCommentDto: CreateCommentDto) {
-    await this.commentModel.create(createCommentDto);
+  async create(createCommentData) {
+    return await this.commentModel.create(createCommentData);
   }
   async delete(id: string) {
-    await this.commentModel.findByIdAndDelete(id);
+    return await this.commentModel.findByIdAndDelete(id);
   }
-  async getCommentByBlogId(blogId: string) {
-    return this.commentModel.find({ blogId });
+  async getCommentsByBlogId(blogId: string) {
+    return await this.commentModel
+      .find({ blogId })
+      .populate({ path: 'authorId', select: '-password' });
   }
   async find(id: string) {
-    return this.commentModel.findById(id);
+    return await this.commentModel.findById(id);
   }
 }

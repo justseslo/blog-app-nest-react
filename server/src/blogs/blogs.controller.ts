@@ -22,8 +22,11 @@ export class BlogsController {
   @UseGuards(AuthGuard('jwt'))
   async createBlog(@Body() createBlogDto: CreateBlogDto, @Req() req) {
     const userId = req.user?.userId;
-    await this.blogsService.create({ ...createBlogDto, authorId: userId });
-    return { success: true, msg: 'Created blog successfully' };
+    const blog = await this.blogsService.create({
+      ...createBlogDto,
+      authorId: userId,
+    });
+    return { success: true, msg: 'Created blog successfully', blog };
   }
   @Get()
   @UseGuards(OptionalAuthGuard)
@@ -35,8 +38,8 @@ export class BlogsController {
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'), BlogsOwnerShip)
   async deleteBlog(@Param('id') id: string) {
-    await this.blogsService.delete(id);
-    return { success: true, msg: 'Deleted blog successfully' };
+    const blog = await this.blogsService.delete(id);
+    return { success: true, msg: 'Deleted blog successfully', blog };
   }
   @Get('my-blogs')
   @UseGuards(AuthGuard('jwt'))

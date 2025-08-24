@@ -2,6 +2,7 @@
 import React from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { IBlog } from "../types/blog.interface";
+import CreateComment from "@/features/comment/components/CreateComment";
 
 export default function BlogDetail({ blog }: { blog: IBlog }) {
   return (
@@ -32,7 +33,7 @@ export default function BlogDetail({ blog }: { blog: IBlog }) {
         </h1>
       </header>
       <article className="leading-8 tracking-wide">{blog.content}</article>
+      <CreateComment blogId={blog._id} />
     </div>
   );
 }
-

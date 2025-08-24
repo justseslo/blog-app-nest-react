@@ -13,10 +13,10 @@ export class BlogsService {
     private readonly likesService: LikesService,
   ) {}
   async create(blogData) {
-    await this.blogModel.create(blogData);
+    return await this.blogModel.create(blogData);
   }
   async delete(id: string) {
-    await this.blogModel.findByIdAndDelete(id).exec();
+    return await this.blogModel.findByIdAndDelete(id).exec();
   }
   async findById(id: string) {
     return await this.blogModel
@@ -51,5 +51,4 @@ export class BlogsService {
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
-  async getLikes() {}
 }
