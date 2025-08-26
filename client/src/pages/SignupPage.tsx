@@ -56,7 +56,7 @@ export function SignupPage() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen overflow-hidden">
       <Card className="min-w-md">
         <CardHeader>
           <CardTitle className="text-center text-4xl text-emerald-900">

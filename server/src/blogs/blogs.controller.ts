@@ -28,13 +28,25 @@ export class BlogsController {
     });
     return { success: true, msg: 'Created blog successfully', blog };
   }
-  @Get()
+  @Get('count')
+  async getBlogsCount() {
+    const blogs = await this.blogsService.getBlogsCount();
+    const blogsCount = blogs.length;
+    return { success: true, blogsCount };
+  }
+  @Get('details/:id')
+  async getBlogDetails(@Param('id') id: string) {
+    const blog = await this.blogsService.findById(id);
+    return { success: true, blog };
+  }
+  @Get('page/:page')
   @UseGuards(OptionalAuthGuard)
-  async getBlogs(@Req() req) {
+  async getBlogs(@Req() req, @Param('page') page: string) {
     const user: IJwtPayload = req.user;
-    const blogs = await this.blogsService.getBlogs(user);
+    const blogs = await this.blogsService.getBlogs(user, Number(page));
     return { success: true, blogs };
   }
+
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'), BlogsOwnerShip)
   async deleteBlog(@Param('id') id: string) {
@@ -47,10 +59,5 @@ export class BlogsController {
     const userId = req.user.userId;
     const myblogs = await this.blogsService.getBlogsByAuthorId(userId);
     return { success: true, myblogs };
-  }
-  @Get(':id')
-  async getBlogDetails(@Param('id') id: string) {
-    const blog = await this.blogsService.findById(id);
-    return { success: true, blog };
   }
 }

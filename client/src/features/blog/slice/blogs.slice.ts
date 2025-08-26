@@ -5,17 +5,19 @@ interface IBlogsState {
   blogs: IBlog[];
   currentBlog: IBlog | undefined;
   myBlogs: IBlog[];
+  blogsCount: number;
 }
 const initialState: IBlogsState = {
   blogs: [],
   currentBlog: undefined,
   myBlogs: [],
+  blogsCount: 0,
 };
 export const getBlogDetail = createAsyncThunk(
   "blogs/getBlogDetail",
   async (id: string) => {
     try {
-      const res = await api.get(`/blogs/${id}`);
+      const res = await api.get(`/blogs/details/${id}`);
       if (res.data.success) return res.data.blog;
     } catch (error) {
       throw error;
@@ -30,14 +32,28 @@ export const getMyblogs = createAsyncThunk("blogs/myBlogs", async () => {
     throw error;
   }
 });
-export const getBlogs = createAsyncThunk("blogs/getBlogs", async () => {
-  try {
-    const res = await api.get("/blogs");
-    if (res.data.success) return res.data.blogs;
-  } catch (error) {
-    throw error;
+export const getBlogs = createAsyncThunk(
+  "blogs/getBlogs",
+  async (page: string) => {
+    try {
+      const res = await api.get(`/blogs/page/${page}`);
+      if (res.data.success) return res.data.blogs;
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
+export const getBlogsCount = createAsyncThunk(
+  "blogs/getBlogsCount",
+  async () => {
+    try {
+      const res = await api.get("/blogs/count");
+      if (res.data.success) return res.data.blogsCount;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 export const blogsSlice = createSlice({
   initialState,
   name: "blogs",
@@ -51,6 +67,9 @@ export const blogsSlice = createSlice({
     });
     builder.addCase(getMyblogs.fulfilled, (state, action) => {
       state.myBlogs = action.payload;
+    });
+    builder.addCase(getBlogsCount.fulfilled, (state, action) => {
+      state.blogsCount = action.payload;
     });
   },
 });

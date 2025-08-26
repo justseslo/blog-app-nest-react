@@ -44,7 +44,7 @@ export default function LoginPage() {
       });
       if (res.data.success) {
         dispatch(checkToken());
-        return navigate("/blogs");
+        return navigate("/blogs/1");
       }
       clearFormData();
     } catch (error) {
@@ -59,7 +59,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen overflow-hidden">
       <Card className="min-w-md">
         <CardHeader>
           <CardTitle className="text-center text-4xl text-emerald-900">

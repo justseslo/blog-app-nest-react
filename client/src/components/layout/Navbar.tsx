@@ -34,6 +34,7 @@ export default function Navbar() {
     { href: "/contact", text: "Contact" },
     { href: "/authors", text: "Authors" },
     { href: "/my-blogs", text: "My Blogs" },
+    { href: "/blogs/create-blog", text: "Create Blog" },
   ];
   return (
     <nav className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
@@ -74,7 +75,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
-      <Sheet >
+      <Sheet>
         <SheetTrigger className="sm:hidden ">
           <MdSegment size={30} className="cursor-pointer" />
         </SheetTrigger>
@@ -83,7 +84,7 @@ export default function Navbar() {
           className="sm:hidden bg-emerald-800 flex text-white flex-col "
           side="left"
         >
-          <SheetClose className="flex justify-end mt-4 mr-4" >
+          <SheetClose className="flex justify-end mt-4 mr-4">
             <MdSegment size={30} className="cursor-pointer rotate-y-180" />
           </SheetClose>
           <div className=" flex flex-col ">

@@ -1,28 +1,22 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { FaPlus } from "react-icons/fa";
 import { api } from "@/lib/api";
 import { AxiosError } from "axios";
 import type { ICreateBlog } from "../types/blog.interface";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store/store";
 import { getBlogs } from "../slice/blogs.slice";
-interface IMsg {
-  type: "error" | "success" | "";
-  msg: string;
-}
+import type { IMsg } from "@/common/types/message.interface";
+import BlogForm from "./BlogForm";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+  CardContent,
+} from "@/components/ui/card";
+
 export default function CreateBlog() {
   const dispatch = useDispatch<AppDispatch>();
   const [msg, setMsg] = useState<IMsg>({ type: "", msg: "" });
@@ -64,101 +58,29 @@ export default function CreateBlog() {
     setFormData({ content: "", description: "", imageUrl: "", title: "" });
   };
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div
-          className="fixed right-10 bottom-10 bg-emerald-800 text-white rounded-full min-w-12 min-h-12 cursor-pointer flex justify-center items-center"
-          onClick={clearFormData}
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-center text-4xl text-emerald-900">
+          Create Blog
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="sm:min-w-md">
+        <BlogForm
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleCreate}
+          msg={msg}
+        />
+      </CardContent>
+      <CardFooter>
+        <Button
+          className="bg-emerald-700 hover:bg-emerald-900 hover:scale-105 cursor-pointer"
+          size={"lg"}
+          form="signup"
         >
-          <FaPlus size={23} />
-        </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <form
-          className="flex flex-col gap-4 bg-white"
-          id="signup"
-          onSubmit={handleCreate}
-        >
-          <DialogHeader>
-            <DialogTitle className="text-center text-4xl text-emerald-900">
-              Create Blog
-            </DialogTitle>
-          </DialogHeader>
-
-          {msg ? (
-            <p
-              className={`${
-                msg.type === "success" ? "text-emerald-500" : "text-red-700"
-              }`}
-            >
-              {msg.msg}
-            </p>
-          ) : null}
-          <div className="flex flex-col justify-center gap-3">
-            <Label className="text-lg text-emerald-800" htmlFor="title">
-              Title:
-            </Label>
-            <Input
-              className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
-              placeholder="Enter title..."
-              name="title"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col justify-center gap-3">
-            <Label className="text-lg text-emerald-800" htmlFor="description">
-              Description:
-            </Label>
-            <Textarea
-              className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
-              placeholder="Enter description..."
-              id="description"
-              name="description"
-              value={formData.description}
-              maxLength={250}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col justify-center gap-3">
-            <Label className="text-lg text-emerald-800" htmlFor="content">
-              Content:
-            </Label>
-            <Textarea
-              className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
-              placeholder="Enter content..."
-              id="content"
-              name="content"
-              maxLength={15000}
-              onChange={handleChange}
-              value={formData.content}
-            />
-          </div>
-          <div className="flex flex-col justify-center gap-3">
-            <Label className="text-lg text-emerald-800" htmlFor="imageUrl">
-              Image Url:
-            </Label>
-            <Input
-              className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
-              placeholder="Enter image url..."
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-            />
-          </div>
-          <DialogFooter>
-            <Button
-              className="bg-emerald-700 hover:bg-emerald-900 hover:scale-105 cursor-pointer"
-              size={"lg"}
-              form="signup"
-            >
-              Submit
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          Submit
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

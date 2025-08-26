@@ -34,6 +34,7 @@ export default function BlogDetail({ blog }: { blog: IBlog }) {
       </header>
       <article className="leading-8 tracking-wide">{blog.content}</article>
       <CreateComment blogId={blog._id} />
+      
     </div>
   );
 }

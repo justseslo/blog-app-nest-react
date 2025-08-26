@@ -1,20 +1,23 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch, RootState } from "@/store/store";
-import { getBlogs } from "../../features/blog/slice/blogs.slice";
+import { getBlogs, getBlogsCount } from "../../features/blog/slice/blogs.slice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import BlogCard from "@/features/blog/components/BlogCard";
 import Pagination from "@/components/layout/Pagination";
-import CreateBlog from "@/features/blog/components/CreateBlog";
+import { useParams } from "react-router";
 
 function BlogsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const blogs = useSelector((state: RootState) => state.blogs.blogs);
+  const { page } = useParams();
+
   useEffect(() => {
-    dispatch(getBlogs());
-  }, []);
+    dispatch(getBlogs(page as string));
+    dispatch(getBlogsCount());
+  }, [page]);
   const handleClick = (id: string) => {
     navigate(`/blog-detail/${id}`);
   };
@@ -32,7 +35,6 @@ function BlogsPage() {
         ))}
       </div>
       <Pagination />
-      <CreateBlog />
     </div>
   );
 }

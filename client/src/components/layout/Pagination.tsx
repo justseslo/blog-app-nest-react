@@ -7,9 +7,7 @@ export default function Pagination() {
   const navigate = useNavigate();
   const params = useParams();
   const currentPage = Number(params.page);
-  const blogsCount = useSelector(
-    (state: RootState) => state.blogs.blogs
-  ).length;
+  const blogsCount = useSelector((state: RootState) => state.blogs.blogsCount);
   const totalPage = Math.ceil(blogsCount / 12);
   const pages = [
     currentPage - 2 > 0 && currentPage - 2,
@@ -21,9 +19,16 @@ export default function Pagination() {
   const filteredPages = pages.filter((page) => page);
   return (
     <div className="flex bg-emerald-800 text-white text-xl min-w-xs px-3 py-1 rounded-lg items-center justify-between mt-10">
-      <p>First</p>
+      <p
+        className="cursor-pointer"
+        onClick={() => {
+          navigate("/blogs/1");
+        }}
+      >
+        First
+      </p>
       <div className="flex">
-        {filteredPages.map((page) => (
+        {filteredPages.map((page,index) => (
           <p
             className={`p-2 hover:bg-emerald-900 rounded-xl cursor-pointer ${
               currentPage === page && "bg-emerald-900 font-bold scale-110"
@@ -31,12 +36,20 @@ export default function Pagination() {
             onClick={() => {
               navigate(`/blogs/${page}`);
             }}
+            key={index}
           >
             {page}
           </p>
         ))}
       </div>
-      <p>Last</p>
+      <p
+        className="cursor-pointer"
+        onClick={() => {
+          navigate(`/blogs/${totalPage}`);
+        }}
+      >
+        Last
+      </p>
     </div>
   );
 }

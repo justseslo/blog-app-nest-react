@@ -24,22 +24,20 @@ export class BlogsService {
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
-  async getBlogs(user: IJwtPayload) {
+  async getBlogs(user: IJwtPayload, page: number) {
     const blogs = await this.blogModel
       .find({})
+      .skip((page - 1) * 12)
+      .limit(12)
       .populate({ path: 'authorId', select: '-password' })
       .exec();
     const newBlogs = await Promise.all(
       blogs.map(async (blog) => ({
         ...blog.toObject(),
-        likes: (
-          await this.likesService.getByBlogId(blog._id.toString())
-        ).length,
+        likes: (await this.likesService.getByBlogId(blog._id.toString()))
+          .length,
         isLiked: user
-          ? await this.likesService.checkLike(
-              blog._id.toString(),
-              user.userId,
-            )
+          ? await this.likesService.checkLike(blog._id.toString(), user.userId)
           : false,
       })),
     );
@@ -50,5 +48,8 @@ export class BlogsService {
       .find({ authorId })
       .populate({ path: 'authorId', select: '-password' })
       .exec();
+  }
+  async getBlogsCount() {
+    return await this.blogModel.find({});
   }
 }
