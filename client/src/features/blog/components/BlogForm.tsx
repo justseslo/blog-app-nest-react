@@ -1,36 +1,40 @@
 import type { IMsg } from "@/common/types/message.interface";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import React from "react";
-import type { ICreateBlog } from "../types/blog.interface";
+import type { IBlog, ICreateBlog } from "../types/blog.interface";
 
 export default function BlogForm({
-  handleSubmit,
+  blog,
+  isCreate,
+  handleUpdate,
   msg,
   formData,
   handleChange,
+  handleCreate,
 }: {
-  handleSubmit: (e: React.FormEvent) => {};
+  blog?: IBlog;
+  isCreate: boolean;
+  handleUpdate?: (e: React.FormEvent, blogId: string) => void;
   msg: IMsg;
   formData: ICreateBlog;
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  handleCreate?: (e: React.FormEvent) => void;
 }) {
   return (
     <form
       className="flex flex-col gap-4 bg-white"
-      id="signup"
-      onSubmit={handleSubmit}
+      id={isCreate ? "create" : "update"}
+      onSubmit={(e: React.FormEvent) => {
+        if (isCreate) {
+          handleCreate?.(e);
+        } else {
+          handleUpdate?.(e, blog!._id);
+        }
+      }}
     >
       {msg ? (
         <p

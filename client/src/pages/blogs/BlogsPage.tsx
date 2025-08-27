@@ -15,7 +15,7 @@ function BlogsPage() {
   const { page } = useParams();
 
   useEffect(() => {
-    dispatch(getBlogs(page as string));
+    dispatch(getBlogs(page ? page : "1"));
     dispatch(getBlogsCount());
   }, [page]);
   const handleClick = (id: string) => {
@@ -34,7 +34,7 @@ function BlogsPage() {
           />
         ))}
       </div>
-      <Pagination />
+      <Pagination route="blogs" />
     </div>
   );
 }

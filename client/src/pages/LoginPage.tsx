@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -111,7 +110,7 @@ export default function LoginPage() {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center items-center">
+        <CardFooter className="flex justify-end items-center">
           <Button
             className="bg-emerald-700 hover:bg-emerald-900 hover:scale-105 cursor-pointer"
             size={"lg"}

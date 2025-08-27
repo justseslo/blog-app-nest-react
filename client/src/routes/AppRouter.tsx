@@ -30,7 +30,7 @@ export default function AppRouter() {
           element={isLogined ? <CreateBlogPage /> : <Navigate to={"/login"} />}
         />
         <Route
-          path="my-blogs"
+          path="my-blogs/:page"
           element={isLogined ? <MyBlogsPage /> : <Navigate to={"/login"} />}
         />
         <Route

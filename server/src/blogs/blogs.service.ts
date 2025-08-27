@@ -43,13 +43,18 @@ export class BlogsService {
     );
     return newBlogs;
   }
-  async getBlogsByAuthorId(authorId: string) {
+  async getBlogsByAuthorId(authorId: string, page: number) {
     return await this.blogModel
       .find({ authorId })
+      .skip((page - 1) * 12)
+      .limit(12)
       .populate({ path: 'authorId', select: '-password' })
       .exec();
   }
   async getBlogsCount() {
     return await this.blogModel.find({});
+  }
+  async update(blogId: string, blogData) {
+    return await this.blogModel.findByIdAndUpdate(blogId, blogData);
   }
 }

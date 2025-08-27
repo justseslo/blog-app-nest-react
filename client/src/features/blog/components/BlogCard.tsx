@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { IBlog } from "../types/blog.interface";
-import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
@@ -18,25 +17,27 @@ import { IoMdHeart } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { getBlogs } from "../slice/blogs.slice";
 import type { AppDispatch } from "@/store/store";
+import { useParams } from "react-router";
+import UpdateBlog from "./UpdateBlog";
+
 export default function BlogCard({
   blog,
   showActions = false,
   handleClick,
   handleDelete,
-  handleUpdate,
 }: {
   blog: IBlog;
   handleDelete?: (id: string) => void;
   showActions: boolean;
   handleClick?: (id: string) => void;
-  handleUpdate?: () => void;
 }) {
   const dispatch = useDispatch<AppDispatch>();
+  const { page } = useParams();
   const toggleLike = async (blogId: string) => {
     try {
       const res = await api.post(`/likes/${blogId}`);
       if (res.data.success) {
-        dispatch(getBlogs());
+        dispatch(getBlogs(page ? page : "1"));
       }
     } catch (error) {}
   };
@@ -60,7 +61,7 @@ export default function BlogCard({
       <CardHeader>
         <CardTitle>{blog.title}</CardTitle>
       </CardHeader>
-      <CardContent>{blog.description}</CardContent>
+      {!showActions && <CardContent>{blog.description}</CardContent>}
       <CardFooter
         className={`${
           showActions ? "justify-around" : "justify-between"
@@ -68,14 +69,7 @@ export default function BlogCard({
       >
         {showActions ? (
           <>
-            <FaPen
-              className="cursor-pointer"
-              size={25}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleUpdate?.();
-              }}
-            />
+            <UpdateBlog blog={blog} />
             <MdDelete
               onClick={(e) => {
                 e.stopPropagation();

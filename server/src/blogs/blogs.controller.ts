@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -14,6 +15,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { BlogsOwnerShip } from './guards/blog-ownership.guard';
 import { OptionalAuthGuard } from 'src/common/guards/optional-auth.guard';
 import { IJwtPayload } from 'src/auth/types/jwt-payload.interface';
+import { updateBlogDto } from './dto/update-blog.dto';
 
 @Controller('blogs')
 export class BlogsController {
@@ -53,11 +55,28 @@ export class BlogsController {
     const blog = await this.blogsService.delete(id);
     return { success: true, msg: 'Deleted blog successfully', blog };
   }
-  @Get('my-blogs')
+  @Get('my-blogs/:page')
   @UseGuards(AuthGuard('jwt'))
-  async getMyBlogs(@Req() req) {
+  async getMyBlogs(@Req() req, @Param('page') page: string) {
     const userId = req.user.userId;
-    const myblogs = await this.blogsService.getBlogsByAuthorId(userId);
+    const myblogs = await this.blogsService.getBlogsByAuthorId(
+      userId,
+      Number(page),
+    );
     return { success: true, myblogs };
+  }
+  @Patch(':blogId')
+  @UseGuards(AuthGuard('jwt'))
+  async updateBlog(
+    @Param('blogId') blogId: string,
+    @Body() updateBlogDto: updateBlogDto,
+    @Req() req,
+  ) {
+    const user: IJwtPayload = req.user;
+    const blog = await this.blogsService.update(blogId, {
+      ...updateBlogDto,
+      authorId: user.userId,
+    });
+    return { success: true, blog, msg: 'Updated blog successfully' };
   }
 }

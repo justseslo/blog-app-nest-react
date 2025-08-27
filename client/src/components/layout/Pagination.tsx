@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 
-export default function Pagination() {
+export default function Pagination({ route }: { route: string }) {
   const navigate = useNavigate();
   const params = useParams();
   const currentPage = Number(params.page);
@@ -22,19 +22,19 @@ export default function Pagination() {
       <p
         className="cursor-pointer"
         onClick={() => {
-          navigate("/blogs/1");
+          navigate(`/${route}/1`);
         }}
       >
         First
       </p>
       <div className="flex">
-        {filteredPages.map((page,index) => (
+        {filteredPages.map((page, index) => (
           <p
             className={`p-2 hover:bg-emerald-900 rounded-xl cursor-pointer ${
               currentPage === page && "bg-emerald-900 font-bold scale-110"
             }`}
             onClick={() => {
-              navigate(`/blogs/${page}`);
+              navigate(`/${route}/${page}`);
             }}
             key={index}
           >
@@ -45,7 +45,7 @@ export default function Pagination() {
       <p
         className="cursor-pointer"
         onClick={() => {
-          navigate(`/blogs/${totalPage}`);
+          navigate(`/${route}/${totalPage}`);
         }}
       >
         Last

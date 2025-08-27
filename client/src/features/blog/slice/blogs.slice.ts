@@ -24,14 +24,17 @@ export const getBlogDetail = createAsyncThunk(
     }
   }
 );
-export const getMyblogs = createAsyncThunk("blogs/myBlogs", async () => {
-  try {
-    const res = await api.get("/blogs/my-blogs");
-    if (res.data.success) return res.data.myblogs;
-  } catch (error) {
-    throw error;
+export const getMyblogs = createAsyncThunk(
+  "blogs/myBlogs",
+  async (page: string) => {
+    try {
+      const res = await api.get(`/blogs/my-blogs/${page}`);
+      if (res.data.success) return res.data.myblogs;
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
 export const getBlogs = createAsyncThunk(
   "blogs/getBlogs",
   async (page: string) => {

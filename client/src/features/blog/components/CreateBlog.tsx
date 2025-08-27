@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { api } from "@/lib/api";
 import { AxiosError } from "axios";
@@ -16,16 +15,18 @@ import {
   CardFooter,
   CardContent,
 } from "@/components/ui/card";
+import { useParams } from "react-router";
 
 export default function CreateBlog() {
   const dispatch = useDispatch<AppDispatch>();
   const [msg, setMsg] = useState<IMsg>({ type: "", msg: "" });
+  const { page } = useParams();
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await api.post("/blogs", formData, { withCredentials: true });
       if (res.data.success) {
-        dispatch(getBlogs());
+        dispatch(getBlogs(page ? page : "1"));
         setMsg({ msg: res.data.msg, type: "success" });
         setTimeout(() => {
           setMsg({ msg: "", type: "" });
@@ -39,7 +40,6 @@ export default function CreateBlog() {
           setMsg({ msg: "", type: "" });
         }, 2000);
       }
-      console.error(error);
       clearFormData();
     }
   };
@@ -68,15 +68,16 @@ export default function CreateBlog() {
         <BlogForm
           formData={formData}
           handleChange={handleChange}
-          handleSubmit={handleCreate}
+          handleCreate={handleCreate}
           msg={msg}
+          isCreate={true}
         />
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex justify-end">
         <Button
           className="bg-emerald-700 hover:bg-emerald-900 hover:scale-105 cursor-pointer"
           size={"lg"}
-          form="signup"
+          form="create"
         >
           Submit
         </Button>
