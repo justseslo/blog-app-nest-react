@@ -1,8 +1,9 @@
 import type { IAuthor } from "@/features/author/types/author.interface";
 
 export interface IComment {
+  _id: string;
   content: string;
-  author: IAuthor;
+  authorId: IAuthor;
   blogId: string;
   createdAt: string;
 }

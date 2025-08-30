@@ -2,13 +2,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
 import React, { useState } from "react";
+import { getCommentsByBlogId } from "../slice/comments.slice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/store/store";
 
 export default function CreateComment({ blogId }: { blogId: string }) {
+  const dispatch = useDispatch<AppDispatch>();
   const [content, setContent] = useState<string>("");
   const addComment = async (blogId: string) => {
     try {
       const res = await api.post(`/comments/${blogId}`, { content: content });
+      if (res.data.success) dispatch(getCommentsByBlogId(blogId));
     } catch (error) {}
+    setContent("");
   };
   return (
     <div className="flex flex-row items-center gap-5 mt-10">

@@ -18,7 +18,8 @@ export class CommentsService {
   async getCommentsByBlogId(blogId: string) {
     return await this.commentModel
       .find({ blogId })
-      .populate({ path: 'authorId', select: '-password' });
+      .populate({ path: 'authorId', select: '-password' })
+      .exec();
   }
   async find(id: string) {
     return await this.commentModel.findById(id);

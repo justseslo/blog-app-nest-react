@@ -30,11 +30,11 @@ export default function Navbar() {
   };
   const links = [
     { href: "/blogs/1", text: "Blogs" },
-    { href: "/about", text: "About" },
-    { href: "/contact", text: "Contact" },
-    { href: "/authors", text: "Authors" },
     { href: "/my-blogs/1", text: "My Blogs" },
     { href: "/blogs/create-blog", text: "Create Blog" },
+    { href: "/authors", text: "Authors" },
+    { href: "/about", text: "About" },
+    { href: "/contact", text: "Contact" },
   ];
   return (
     <nav className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">

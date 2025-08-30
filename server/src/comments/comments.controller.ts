@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -34,5 +35,10 @@ export class CommentsController {
   async getComments(@Param('blogId') blogId: string) {
     const comments = await this.commentsService.getCommentsByBlogId(blogId);
     return { success: true, comments };
+  }
+  @Delete(':commentId')
+  async deleteComment(@Param('commentId') commentId: string) {
+    const comment = await this.commentsService.delete(commentId);
+    return { success: true, comment };
   }
 }

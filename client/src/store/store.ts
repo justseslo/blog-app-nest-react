@@ -1,10 +1,12 @@
 import { authSlice } from "@/features/auth/slice/auth.slice";
 import { blogsSlice } from "@/features/blog/slice/blogs.slice";
+import { commentSlice } from "@/features/comment/slice/comments.slice";
 import { configureStore } from "@reduxjs/toolkit";
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
     blogs: blogsSlice.reducer,
+    comments: commentSlice.reducer,
   },
 });
 

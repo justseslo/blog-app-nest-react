@@ -6,7 +6,7 @@ import CreateComment from "@/features/comment/components/CreateComment";
 
 export default function BlogDetail({ blog }: { blog: IBlog }) {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
+    <div>
       <div className="mb-8">
         <AspectRatio
           ratio={16 / 9}
@@ -33,8 +33,6 @@ export default function BlogDetail({ blog }: { blog: IBlog }) {
         </h1>
       </header>
       <article className="leading-8 tracking-wide">{blog.content}</article>
-      <CreateComment blogId={blog._id} />
-      
     </div>
   );
 }
