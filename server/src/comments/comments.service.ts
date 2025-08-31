@@ -24,4 +24,7 @@ export class CommentsService {
   async find(id: string) {
     return await this.commentModel.findById(id);
   }
+  async update(id: string, updateCommentData) {
+    return await this.commentModel.findByIdAndUpdate(id, updateCommentData);
+  }
 }

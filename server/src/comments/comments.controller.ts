@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -12,6 +13,8 @@ import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { IJwtPayload } from 'src/auth/types/jwt-payload.interface';
+import { CommentOwnershipGuard } from './guards/comment-ownership.guard';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -37,8 +40,20 @@ export class CommentsController {
     return { success: true, comments };
   }
   @Delete(':commentId')
+  @UseGuards(AuthGuard('jwt'), CommentOwnershipGuard)
   async deleteComment(@Param('commentId') commentId: string) {
     const comment = await this.commentsService.delete(commentId);
+    return { success: true, comment };
+  }
+  @Patch(':commentId')
+  @UseGuards(AuthGuard('jwt'), CommentOwnershipGuard)
+  async updateComment(
+    @Param('commentId') commentId: string,
+    @Body() updateCommentDto: UpdateCommentDto,
+  ) {
+    const comment = await this.commentsService.update(commentId, {
+      ...updateCommentDto,
+    });
     return { success: true, comment };
   }
 }

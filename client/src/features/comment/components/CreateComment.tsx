@@ -19,7 +19,7 @@ export default function CreateComment({ blogId }: { blogId: string }) {
   return (
     <div className="flex flex-row items-center gap-5 mt-10">
       <Input
-        className="ring ring-emerald-600 focus-visible:ring-emerald-800 focus-visible:ring-offset-2"
+        className="ring ring-emerald-600 focus-visible:ring-emerald-800 shadow-sm shadow-emerald-900 focus-visible:ring-offset-2"
         placeholder="Add a comment..."
         value={content}
         onChange={(e) => {
