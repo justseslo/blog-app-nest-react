@@ -1,7 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Like, LikeDocument } from './schemas/like.schema';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
+import { Blog } from 'src/blogs/schemas/blog.schema';
 
 @Injectable()
 export class LikesService {
@@ -41,5 +42,27 @@ export class LikesService {
       return true;
     }
     return false;
+  }
+  async getBlogsWithMostLikes() {
+    return await this.likeModel.aggregate([
+      { $group: { _id: '$blogId', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 8 },
+      {
+        $addFields: {
+          _id: { $toObjectId: '$_id' },
+        },
+      },
+      {
+        $lookup: {
+          from: 'blogs',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'blogDetail',
+        },
+      },
+      { $unwind: '$blogDetail' },
+      { $replaceRoot: { newRoot: '$blogDetail' } },
+    ]);
   }
 }

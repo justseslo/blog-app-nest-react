@@ -15,7 +15,7 @@ import { api } from "@/lib/api";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { useDispatch } from "react-redux";
-import { getBlogs } from "../slice/blogs.slice";
+import { getBestBlogs, getBlogs } from "../slice/blogs.slice";
 import type { AppDispatch } from "@/store/store";
 import { useParams } from "react-router";
 import UpdateBlog from "./UpdateBlog";
@@ -37,7 +37,7 @@ export default function BlogCard({
     try {
       const res = await api.post(`/likes/${blogId}`);
       if (res.data.success) {
-        dispatch(getBlogs(page ? page : "1"));
+        page ? dispatch(getBlogs(page ? page : "1")) : null;
       }
     } catch (error) {}
   };
@@ -61,7 +61,7 @@ export default function BlogCard({
       <CardHeader>
         <CardTitle>{blog.title}</CardTitle>
       </CardHeader>
-      {!showActions && <CardContent>{blog.description}</CardContent>}
+      <CardContent>{blog.description}</CardContent>
       <CardFooter
         className={`${
           showActions ? "justify-around" : "justify-between"

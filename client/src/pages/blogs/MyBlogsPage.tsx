@@ -26,7 +26,7 @@ export default function MyBlogsPage() {
   };
   return (
     <div className="flex flex-col items-center">
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-5 sm:grid-cols-2 gap-5 px-6 mt-7">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-5 px-6 mt-7">
         {myblogs.map((blog) => (
           <BlogCard
             key={blog._id}

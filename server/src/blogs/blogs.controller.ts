@@ -41,6 +41,13 @@ export class BlogsController {
     const blog = await this.blogsService.findById(id);
     return { success: true, blog };
   }
+  @Get('best-blogs')
+  @UseGuards(OptionalAuthGuard)
+  async getBestBlogs(@Req() req) {
+    const user: IJwtPayload = req?.user;
+    const bestBlogs = await this.blogsService.getBestBlogs(user);
+    return { success: true, bestBlogs };
+  }
   @Get('page/:page')
   @UseGuards(OptionalAuthGuard)
   async getBlogs(@Req() req, @Param('page') page: string) {
@@ -66,7 +73,7 @@ export class BlogsController {
     return { success: true, myblogs };
   }
   @Patch(':blogId')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), BlogsOwnerShip)
   async updateBlog(
     @Param('blogId') blogId: string,
     @Body() updateBlogDto: updateBlogDto,

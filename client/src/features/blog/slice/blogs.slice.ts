@@ -6,13 +6,23 @@ interface IBlogsState {
   currentBlog: IBlog | undefined;
   myBlogs: IBlog[];
   blogsCount: number;
+  bestBlogs: IBlog[];
 }
 const initialState: IBlogsState = {
   blogs: [],
   currentBlog: undefined,
   myBlogs: [],
   blogsCount: 0,
+  bestBlogs: [],
 };
+export const getBestBlogs = createAsyncThunk("blogs/getBestBlogs", async () => {
+  try {
+    const res = await api.get("/blogs/best-blogs");
+    if (res.data.success) return res.data.bestBlogs;
+  } catch (error) {
+    throw error;
+  }
+});
 export const getBlogDetail = createAsyncThunk(
   "blogs/getBlogDetail",
   async (id: string) => {
@@ -73,6 +83,9 @@ export const blogsSlice = createSlice({
     });
     builder.addCase(getBlogsCount.fulfilled, (state, action) => {
       state.blogsCount = action.payload;
+    });
+    builder.addCase(getBestBlogs.fulfilled, (state, action) => {
+      state.bestBlogs = action.payload;
     });
   },
 });

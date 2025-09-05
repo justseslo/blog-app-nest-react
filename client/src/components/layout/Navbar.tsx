@@ -39,12 +39,12 @@ export default function Navbar() {
   return (
     <nav className="bg-emerald-800 text-white p-5 rounded-bl-4xl rounded-br-4xl flex justify-between items-center">
       <h1
-        className="text-3xl cursor-pointer"
+        className="text-4xl cursor-pointer font-bold"
         onClick={() => {
           navigate("/");
         }}
       >
-        BlogApp
+        The Chronicle
       </h1>
       <div className="gap-5 items-center sm:flex hidden">
         {links.map((link, index) => (

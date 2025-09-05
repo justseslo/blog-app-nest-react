@@ -57,4 +57,15 @@ export class BlogsService {
   async update(blogId: string, blogData) {
     return await this.blogModel.findByIdAndUpdate(blogId, blogData);
   }
+  async getBestBlogs(user: IJwtPayload) {
+    const blogs = await this.likesService.getBlogsWithMostLikes();
+    const newBlogs = await Promise.all(
+      blogs.map(async (blog) => ({
+        ...blog,
+        likes: (await this.likesService.getByBlogId(blog._id)).length,
+        isLiked: await this.likesService.checkLike(blog._id, user.userId),
+      })),
+    );
+    return newBlogs;
+  }
 }
